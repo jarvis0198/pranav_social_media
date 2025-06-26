@@ -35,7 +35,7 @@ import { setPosts } from '@/redux/postSlice'
       if (imagePreview) formData.append("image", file);
       try {
         setLoading(true);
-        const res = await axios.post('http://localhost:8000/api/v1/post/addpost', formData, {
+        const res = await axios.post('https://pranav-social-media.onrender.com/api/v1/post/addpost', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
@@ -67,7 +67,7 @@ import { setPosts } from '@/redux/postSlice'
       <div className="flex flex-col gap-4 px-4 pt-4 pb-6">
         <div className='flex gap-3 items-center'>
           <Avatar>
-            <AvatarImage src={`http://localhost:8000${user?.profilePicture}`} alt="img" />
+            <AvatarImage src={`https://pranav-social-media.onrender.com${user?.profilePicture}`} alt="img" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
