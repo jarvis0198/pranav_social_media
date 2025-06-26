@@ -17,6 +17,7 @@ const Post = ({ post }) => {
   const { user } = useSelector(store => store.auth)
   const { posts, selectedPost } = useSelector(store => store.post)
   const [liked, setLiked] = useState(post.likes.includes(user?._id) || false)
+  const [bookmarked, setBookmarked] = useState(post?.bookmarks?.includes(user?._id) || false)
   const [postLike, setPostLike] = useState(post.likes.length)
   const [comment, setComment] = useState(post.comments)
   const dispatch = useDispatch()
@@ -91,6 +92,7 @@ const Post = ({ post }) => {
     try {
       const res = await axios.get(`https://pranav-social-media.onrender.com/api/v1/post/${post?._id}/bookmark`, { withCredentials: true })
       if (res.data.success) {
+        setBookmarked(prev => !prev)
         toast.success(res.data.message)
       }
     } catch (error) {
@@ -121,7 +123,6 @@ const Post = ({ post }) => {
               {user && user?._id !== post?.author._id && (
                 <button className="text-[#ED4956] font-semibold hover:bg-red-50 py-2 rounded transition">Unfollow</button>
               )}
-              
               <button className="hover:bg-gray-100 py-2 rounded transition">Add to favorites</button>
               {user && user?._id === post?.author._id && (
                 <button onClick={deletePostHandler} className="hover:bg-gray-100 py-2 rounded transition">Delete</button>
@@ -151,7 +152,10 @@ const Post = ({ post }) => {
           }} className='cursor-pointer hover:text-gray-600' />
           <Send className='cursor-pointer hover:text-gray-600' />
         </div>
-        <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-600' />
+        <Bookmark
+          onClick={bookmarkHandler}
+          className={`cursor-pointer transition ${bookmarked ? 'text-blue-500' : 'hover:text-gray-600'}`}
+        />
       </div>
 
       <span className='font-medium block mb-2'>{postLike} likes</span>
